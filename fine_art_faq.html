@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fine Art Prompt Refiner - FAQ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #000000, #5c3d2e, #000000);
+            color: #f5ede4;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-family: Georgia, serif;
+            color: #f5ede4;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: #c9a87a;
+            font-size: 1rem;
+        }
+
+        .faq-section {
+            background: rgba(92, 61, 46, 0.3);
+            border: 1px solid rgba(169, 132, 94, 0.5);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            color: #d4a574;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .faq-item {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(169, 132, 94, 0.3);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .question {
+            font-weight: 600;
+            color: #d4a574;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .answer {
+            color: #f5ede4;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(169, 132, 94, 0.3);
+            padding: 1rem;
+            border-radius: 0.3rem;
+            margin: 0.75rem 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #a68456;
+            overflow-x: auto;
+        }
+
+        .good {
+            color: #a68456;
+        }
+
+        .bad {
+            color: #a57a5a;
+            text-decoration: line-through;
+        }
+
+        ul, ol {
+            margin-left: 1.5rem;
+            margin-top: 0.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+            color: #f5ede4;
+        }
+
+        .tip {
+            background: rgba(169, 132, 94, 0.2);
+            border-left: 3px solid #8b6914;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.3rem;
+        }
+
+        .tip-title {
+            font-weight: 600;
+            color: #d4a574;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            border-top: 1px solid rgba(169, 132, 94, 0.4);
+            padding-top: 2rem;
+            margin-top: 3rem;
+            color: #8b6a46;
+            font-size: 0.85rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #8b6914;
+            text-decoration: none;
+            margin-bottom: 2rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #a68456;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="#" class="back-link">← Back to App</a>
+
+        <header>
+            <h1>Fine Art Prompt Refiner</h1>
+            <p class="subtitle">Frequently Asked Questions</p>
+        </header>
+
+        <!-- GENERAL QUESTIONS -->
+        <div class="faq-section">
+            <div class="section-title">❓ General Questions</div>
+
+            <div class="faq-item">
+                <div class="question">What is the Fine Art Prompt Refiner?</div>
+                <div class="answer">
+                    A creative tool that transforms rough ideas into museum-quality AI art prompts. It generates structured briefs with character descriptions, technical specs, mood analysis, and 5 alternative prompt variations—all tailored to your chosen art style and generation model.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">Do I need an account or API key?</div>
+                <div class="answer">
+                    No. The app is completely standalone and works offline. Everything saves locally on your device. You only need an API key if you want to generate images using Midjourney, DALL-E, Stable Diffusion, etc.—but those are separate from this tool.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">How do I use this tool?</div>
+                <div class="answer">
+                    <ol>
+                        <li>Enter a creative idea (rough description is fine)</li>
+                        <li>Choose a drawing style (Realistic, Oil Painting, Chiaroscuro, etc.)</li>
+                        <li>Select a generation model (Midjourney, DALL-E, Flux, etc.)</li>
+                        <li>Add negative prompts (optional—what to avoid)</li>
+                        <li>Click "Refine to Gallery Brief"</li>
+                        <li>Get a detailed brief + 5 character/style variations</li>
+                        <li>Copy any prompt and paste into your AI generator</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">What's saved on my device?</div>
+                <div class="answer">
+                    Your creative idea, selected style, chosen model, and negative prompt settings. All stored locally in your browser—nothing is sent anywhere. If you clear your browser cache, this data resets.
+                </div>
+            </div>
+        </div>
+
+        <!-- PROMPT WRITING -->
+        <div class="faq-section">
+            <div class="section-title">✍️ Prompt Writing Tips</div>
+
+            <div class="faq-item">
+                <div class="question">What makes a good creative idea to input?</div>
+                <div class="answer">
+                    Be descriptive but not rigid. Include:
+                    <ul>
+                        <li>Visual mood (contemplative, dramatic, ethereal)</li>
+                        <li>Lighting ideas (golden hour, candlelit, shadows)</li>
+                        <li>Clothing/styling hints (draped linen, bohemian, elegant)</li>
+                        <li>Emotional undercurrent (quiet dignity, raw power, vulnerability)</li>
+                    </ul>
+                    <div class="code-block">
+                        <span class="good">✓ GOOD:</span> "Contemplative woman in golden light, draped linen, quiet dignity, warm amber glow"<br><br>
+                        <span class="bad">✗ AVOID:</span> "pretty girl"
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">Can I use real people's names?</div>
+                <div class="answer">
+                    <strong>It depends on your generator:</strong>
+                    <ul>
+                        <li><strong>Midjourney & Flux:</strong> ✅ Yes, they handle public figures well</li>
+                        <li><strong>DALL-E 3:</strong> ❌ No, it rejects real public figures</li>
+                        <li><strong>Stable Diffusion:</strong> ✅ Generally allows it</li>
+                    </ul>
+                    <strong>Safe alternative:</strong> Use descriptive language instead.
+                    <div class="code-block">
+                        Instead of: "Marilyn Monroe costume"<br>
+                        Say: "glamorous 1950s starlet aesthetic, platinum waves, red lips"
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">Can I use copyrighted characters?</div>
+                <div class="answer">
+                    <strong>Same as above:</strong>
+                    <ul>
+                        <li><strong>Midjourney & Flux:</strong> ✅ Permissive with IP</li>
+                        <li><strong>DALL-E 3:</strong> ❌ Strict on copyright</li>
+                        <li><strong>Stable Diffusion:</strong> ✅ Generally allows it</li>
+                    </ul>
+                    <strong>Safe alternative:</strong> Describe the character concept without naming them.
+                    <div class="code-block">
+                        Instead of: "Wonder Woman"<br>
+                        Say: "powerful warrior in gold and crimson, iconic stance, classical beauty"
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">What should I put in the Negative Prompt?</div>
+                <div class="answer">
+                    Things you DON'T want in the image. Pre-filled defaults are solid:
+                    <div class="code-block">
+                        bad anatomy, extra fingers, distortion, blur, dull lighting, overexposure
+                    </div>
+                    Add more if needed:
+                    <ul>
+                        <li>Low quality, pixelated, AI artifacts</li>
+                        <li>Oversaturated, washed out, flat lighting</li>
+                        <li>Distorted faces, weird hands, anatomically impossible</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHAT WORKS & WHAT DOESN'T -->
+        <div class="faq-section">
+            <div class="section-title">✅ What Works / ❌ What Doesn't</div>
+
+            <div class="faq-item">
+                <div class="question">What SHOULD I include in prompts?</div>
+                <div class="answer">
+                    <ul>
+                        <li>✅ Art historical references (Rembrandt, Baroque, Pre-Raphaelite, Chiaroscuro)</li>
+                        <li>✅ Emotional descriptors (melancholy, reverence, quiet contemplation, raw power)</li>
+                        <li>✅ Lighting concepts (golden hour, candlelit, Rembrandt lighting, dramatic shadows)</li>
+                        <li>✅ Texture & fabric details (silk, linen, velvet, translucent)</li>
+                        <li>✅ Color palettes (warm amber, earth tones, jewel tones, cool silver)</li>
+                        <li>✅ Camera/technical terms (shallow depth of field, 85mm, cinematic, sharp focus)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">What should I AVOID?</div>
+                <div class="answer">
+                    <ul>
+                        <li>❌ Minors in any suggestive context</li>
+                        <li>❌ Graphic violence, gore, self-harm</li>
+                        <li>❌ Sexual/NSFW content</li>
+                        <li>❌ Hateful stereotypes or slurs</li>
+                        <li>❌ Medical/pharmaceutical instructions</li>
+                        <li>❌ Contradictory instructions ("ethereal yet heavy and dark")</li>
+                        <li>❌ Too many technical jargon terms at once</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">Why did my prompt come back blank or rejected?</div>
+                <div class="answer">
+                    Common causes:
+                    <ul>
+                        <li>Named real public figure (use descriptive language instead)</li>
+                        <li>Copyrighted character on DALL-E (use concept description instead)</li>
+                        <li>Prohibited content (violence, NSFW, minors)</li>
+                        <li>Too vague input (give more visual details)</li>
+                    </ul>
+                    <strong>Solution:</strong> Rephrase using descriptive, artistic language instead of proper names.
+                </div>
+            </div>
+        </div>
+
+        <!-- STYLES & MODELS -->
+        <div class="faq-section">
+            <div class="section-title">🎨 Styles & Generation Models</div>
+
+            <div class="faq-item">
+                <div class="question">Which drawing style should I choose?</div>
+                <div class="answer">
+                    Depends on your vision:
+                    <ul>
+                        <li><strong>Realistic:</strong> Photographic precision</li>
+                        <li><strong>Oil Painting:</strong> Textured, Old Masters sensibility</li>
+                        <li><strong>Watercolor:</strong> Soft, ethereal, fluid</li>
+                        <li><strong>Chiaroscuro:</strong> Dramatic light/shadow (Rembrandt-inspired)</li>
+                        <li><strong>Raphealite:</strong> Pre-Raphaelite richness, intricate detail, jewel tones</li>
+                        <li><strong>Baroque:</strong> Ornate grandeur, theatrical drama</li>
+                        <li><strong>Cinematic:</strong> Film-quality lighting and composition</li>
+                        <li><strong>Surreal:</strong> Dreamlike, impossible elements</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">Which generation model should I use?</div>
+                <div class="answer">
+                    <ul>
+                        <li><strong>Midjourney 6.1:</strong> Excellent all-around, handles real people/IP well, cinematic</li>
+                        <li><strong>DALL-E 3:</strong> Great narratives, strict on public figures, good detail</li>
+                        <li><strong>Stable Diffusion:</strong> Customizable, permissive with figures, community-friendly</li>
+                        <li><strong>Flux:</strong> Fast, high fidelity, strong on realism</li>
+                        <li><strong>Leonardo AI:</strong> Excellent texture and fine detail</li>
+                        <li><strong>Adobe Firefly:</strong> Adobe ecosystem, good for retouching</li>
+                    </ul>
+                    <strong>For best results with named figures/IP:</strong> Use Midjourney or Flux
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">What are the 5 character variations?</div>
+                <div class="answer">
+                    When you refine a prompt, you get 5 different interpretations of the same character concept—each with:
+                    <ul>
+                        <li>Different hair/appearance details</li>
+                        <li>Different facial expression</li>
+                        <li>Different art style</li>
+                    </ul>
+                    This lets you explore multiple "looks" of the same core idea. Copy whichever resonates most and generate with your chosen model.
+                </div>
+            </div>
+        </div>
+
+        <!-- TROUBLESHOOTING -->
+        <div class="faq-section">
+            <div class="section-title">🔧 Troubleshooting</div>
+
+            <div class="faq-item">
+                <div class="question">My prompts aren't saving. What's wrong?</div>
+                <div class="answer">
+                    Check if your browser allows local storage:
+                    <ul>
+                        <li>Private/Incognito mode disables storage</li>
+                        <li>Check browser settings for storage permissions</li>
+                        <li>Clear cache and try again</li>
+                    </ul>
+                    If nothing works, just take screenshots of your briefs instead.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">Can I use this on mobile?</div>
+                <div class="answer">
+                    Yes! It's responsive and works on phones/tablets. Just download the HTML file and open it in your mobile browser. All features work the same.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">Can I edit the prompts after they're generated?</div>
+                <div class="answer">
+                    Yes! Copy the prompt into a text editor or directly into your AI generator and tweak it. The variations are suggestions—feel free to customize, combine, or rewrite them.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="question">How do I download my brief?</div>
+                <div class="answer">
+                    After refining, click the "Download Brief" button. It saves as a .txt file with all your sections (Headline, Subject, Technical, Prompts, etc.).
+                </div>
+            </div>
+        </div>
+
+        <!-- TIPS & BEST PRACTICES -->
+        <div class="faq-section">
+            <div class="section-title">💡 Tips & Best Practices</div>
+
+            <div class="tip">
+                <div class="tip-title">Start Vague, Then Refine</div>
+                <p>First pass: "contemplative portrait with dramatic lighting"<br>
+                Second pass: Add specifics after seeing variations</p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">Mix Styles & Concepts</div>
+                <p>The 5 variations show you possibilities. Copy one, tweak it, combine elements from multiple variations into a custom prompt.</p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">Use Negative Prompts Strategically</div>
+                <p>Start with defaults. After first generation, add specific things you don't want. Iterate.</p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">Reference Art Movements</div>
+                <p>Say "Rembrandt lighting" instead of "dramatic shadows." Say "Pre-Raphaelite detail" instead of "intricate." Generators understand art history.</p>
+            </div>
+
+            <div class="tip">
+                <div class="tip-title">Test on Different Generators</div>
+                <p>Same prompt generates differently on Midjourney vs. DALL-E vs. Flux. If one doesn't work, try another.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>"Light is Language; Color is Emotion; Silence is Composition."</p>
+            <p style="margin-top: 1rem;">by EdwardsArtistity</p>
+        </footer>
+    </div>
+</body>
+</html>

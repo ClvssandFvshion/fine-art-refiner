@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fine Art Prompt Refiner</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #000000, #5c3d2e, #000000);
+            color: #f5ede4;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 3rem;
+            font-family: Georgia, serif;
+            color: #f5ede4;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            color: #c9a87a;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .quote {
+            color: #d4a574;
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: rgba(92, 61, 46, 0.3);
+            border: 1px solid rgba(169, 132, 94, 0.5);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #c9a87a;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        textarea, select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            color: #f5ede4;
+            border: 1px solid rgba(169, 132, 94, 0.4);
+            border-radius: 0.4rem;
+            padding: 0.75rem;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus, select:focus {
+            outline: none;
+            border-color: #a68456;
+        }
+
+        textarea {
+            resize: none;
+            height: 120px;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        button {
+            width: 100%;
+            background: #6b4423;
+            color: #f5ede4;
+            border: 1px solid #8b5a2b;
+            border-radius: 0.4rem;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        button:hover:not(:disabled) {
+            background: #7d5426;
+            border-color: #a68456;
+        }
+
+        button:disabled {
+            background: #5c3d2e;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .secondary-btn {
+            background: rgba(169, 132, 94, 0.3);
+            border: 1px solid rgba(169, 132, 94, 0.4);
+            margin-top: 1rem;
+        }
+
+        .secondary-btn:hover:not(:disabled) {
+            background: rgba(169, 132, 94, 0.5);
+        }
+
+        .suggestion-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(169, 132, 94, 0.6);
+            border-radius: 0.4rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .suggestion-box.show {
+            display: block;
+        }
+
+        .category-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .category-name {
+            color: #c9a87a;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+        }
+
+        .next-btn {
+            background: none;
+            border: none;
+            color: #8b6914;
+            cursor: pointer;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0;
+            width: auto;
+            transition: color 0.3s;
+        }
+
+        .next-btn:hover {
+            color: #a68456;
+        }
+
+        .suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .suggestion-item {
+            background: rgba(92, 61, 46, 0.4);
+            border: 1px solid rgba(169, 132, 94, 0.3);
+            color: #f5ede4;
+            padding: 0.75rem;
+            border-radius: 0.3rem;
+            cursor: pointer;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            transition: all 0.3s;
+            text-align: left;
+        }
+
+        .suggestion-item:hover {
+            background: rgba(92, 61, 46, 0.6);
+            border-color: #a68456;
+        }
+
+        .output-content {
+            display: none;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .output-content.show {
+            display: block;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: rgba(197, 168, 122, 0.6);
+            padding: 2rem;
+        }
+
+        .output-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .output-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #8b6914;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .output-text {
+            color: #f5ede4;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .output-headline {
+            font-size: 1.3rem;
+            font-family: Georgia, serif;
+            font-style: italic;
+        }
+
+        .copy-btn {
+            background: none;
+            border: none;
+            color: #8b6914;
+            cursor: pointer;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0;
+            width: auto;
+            margin-top: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .copy-btn:hover {
+            color: #a68456;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+            border-top: 1px solid rgba(169, 132, 94, 0.4);
+            padding-top: 1rem;
+        }
+
+        .action-buttons button {
+            margin: 0;
+        }
+
+        .style-variations {
+            display: none;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(169, 132, 94, 0.4);
+        }
+
+        .style-variations.show {
+            display: block;
+        }
+
+        .variations-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #8b6914;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .variation-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .variation-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .variation-card {
+            background: rgba(92, 61, 46, 0.2);
+            border: 1px solid rgba(169, 132, 94, 0.4);
+            border-radius: 0.4rem;
+            padding: 1rem;
+        }
+
+        .variation-style {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #d4a574;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .variation-prompt {
+            font-size: 0.85rem;
+            color: #f5ede4;
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+        }
+
+        .variation-copy {
+            background: none;
+            border: none;
+            color: #8b6914;
+            cursor: pointer;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0;
+            width: auto;
+            transition: color 0.3s;
+        }
+
+        .variation-copy:hover {
+            color: #a68456;
+        }
+
+        footer {
+            text-align: center;
+            border-top: 1px solid rgba(169, 132, 94, 0.4);
+            padding-top: 2rem;
+            margin-top: 2rem;
+            color: rgba(139, 106, 70, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .footer-quote {
+            font-style: italic;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-credit {
+            color: #8b6a46;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Fine Art Prompt Refiner</h1>
+            <p class="subtitle">Transform rough ideas into museum-grade creative direction.</p>
+            <p class="quote">— "Light is Language" by EdwardsArtistity</p>
+        </header>
+
+        <div class="grid">
+            <!-- INPUT PANEL -->
+            <div class="panel">
+                <div class="form-group">
+                    <label>Your Creative Idea</label>
+                    <textarea id="roughIdea" placeholder="e.g., A contemplative woman in soft golden light, looking away, draped in linen..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Drawing Style</label>
+                    <select id="selectedStyle">
+                        <option>Realistic</option>
+                        <option>Anime</option>
+                        <option>Oil Painting</option>
+                        <option>Watercolor</option>
+                        <option>3D Render</option>
+                        <option>Sketch</option>
+                        <option>Painterly</option>
+                        <option>Pixel Art</option>
+                        <option>Comic Book</option>
+                        <option>Cinematic</option>
+                        <option>Minimalist</option>
+                        <option>Surreal</option>
+                        <option>Cyberpunk</option>
+                        <option>Fantasy Art</option>
+                        <option>Impressionist</option>
+                        <option>Chiaroscuro</option>
+                        <option>Raphealite</option>
+                        <option>Baroque</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Generation Model</label>
+                    <select id="selectedModel">
+                        <option>Midjourney 6.1</option>
+                        <option>DALL-E 3</option>
+                        <option>Stable Diffusion</option>
+                        <option>Leonardo AI</option>
+                        <option>Flux</option>
+                        <option>Adobe Firefly</option>
+                        <option>Ideogram</option>
+                        <option>Playground AI</option>
+                        <option>Imagen 3</option>
+                        <option>Pika Labs</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Negative Prompt (What to Avoid)</label>
+                    <textarea id="negativePrompt" placeholder="e.g., bad anatomy, blurry, low quality, distorted faces, oversaturated..."></textarea>
+                </div>
+
+                <button id="inspirationBtn" class="secondary-btn">✨ Need Inspiration?</button>
+
+                <div id="suggestionBox" class="suggestion-box">
+                    <div class="category-header">
+                        <div class="category-name" id="categoryName"></div>
+                        <button class="next-btn" id="nextCategoryBtn">Next →</button>
+                    </div>
+                    <div id="suggestionsContainer" class="suggestions"></div>
+                </div>
+
+                <button id="refineBtn">Refine to Gallery Brief</button>
+            </div>
+
+            <!-- OUTPUT PANEL -->
+            <div class="panel">
+                <div id="outputContent" class="output-content">
+                    <!-- Generated content goes here -->
+                </div>
+                <div id="emptyState" class="empty-state">
+                    Refined brief will appear here.
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p class="footer-quote">"Light is Language; Color is Emotion; Silence is Composition."</p>
+            <p class="footer-credit">by EdwardsArtistity</p>
+        </footer>
+    </div>
+
+    <script>
+        const promptCategories = [
+            {
+                category: '🎭 Portrait',
+                suggestions: [
+                    'A contemplative woman in soft golden light, looking away, draped in linen.',
+                    'Elderly man with weathered hands, warm amber glow, quiet dignity.',
+                    'Young person with closed eyes, ethereal morning light, vulnerability.',
+                    'Profile portrait, sculptural lighting, timeless expression.',
+                ]
+            },
+            {
+                category: '⚡ Cinematic Drama',
+                suggestions: [
+                    'Intense close-up, sharp shadows across face, stormy amber backdrop, raw emotion.',
+                    'Figure silhouetted against golden fire, dramatic backlighting, power and tension.',
+                    'Rain-drenched portrait, neon reflections on skin, moody noir aesthetic.',
+                    'Cinematic wide shot, figure in chiaroscuro, narrative tension, film-frame composition.',
+                ]
+            },
+            {
+                category: '✨ Ethereal & Dreamlike',
+                suggestions: [
+                    'Floating figure surrounded by luminescent particles, soft diffused glow, otherworldly.',
+                    'Serene portrait with iridescent light wisps, ethereal color gradients, soft focus edges.',
+                    'Wrapped in translucent fabric, backlit golden hour, dreamlike atmospheric haze.',
+                    'Figure emerging from mist, luminous edges, subtle color shifts, gallery-quality softness.',
+                ]
+            },
+            {
+                category: '🌪️ Bold & Expressive',
+                suggestions: [
+                    'Powerful gesture, dynamic pose, dramatic gestures, bold directional lighting.',
+                    'Raw emotional intensity, saturated amber and earth tones, expressive brushstroke quality.',
+                    'Figure in motion, wind-swept fabric, kinetic energy, confident stance.',
+                    'Commanding presence, strong contrast, sculptural form, unflinching gaze.',
+                ]
+            },
+            {
+                category: '🎨 Abstract & Conceptual',
+                suggestions: [
+                    'Layered textures, geometric shadows, deconstructed form, contemporary fine art sensibility.',
+                    'Subtle dissolve into abstract elements, mixed media quality, conceptual depth.',
+                    'Figure fragmented with light, impressionistic rendering, emotional abstraction.',
+                    'Negative space as language, minimalist composition, bold conceptual statement.',
+                ]
+            },
+            {
+                category: '🌙 Nocturne & Moody',
+                suggestions: [
+                    'Deep shadows, candlelit intimacy, warm pools of light against darkness.',
+                    'Night scene, mysterious silhouettes, dramatic spotlight effect, intrigue.',
+                    'Moonlit portrait, cool silver light mixed with warm amber undertones.',
+                    'Dark atmospheric setting, figure lit by single source, contemplative melancholy.',
+                ]
+            },
+            {
+                category: '🔥 High Fashion & Editorial',
+                suggestions: [
+                    'Couture draped elegantly, sharp geometric shadows, editorial lighting, runway energy.',
+                    'Luxury styling with sculptural light, high-contrast drama, magazine-cover quality.',
+                    'Bold makeup and attitude, dynamic pose, fashion-forward composition, confidence.',
+                    'Avant-garde styling with chiaroscuro, high-fashion editorial sensibility, museum-grade.',
+                ]
+            },
+            {
+                category: '🌍 Cultural & Narrative',
+                suggestions: [
+                    'Portrait with cultural depth, traditional elements lit with cinematic grace, storytelling.',
+                    'Generational portrait, family narrative, rich earth tones, emotional weight.',
+                    'Cultural textile and adornment, respectful portrayal, dignified lighting, meaning.',
+                    'Environmental portrait, subject in context, narrative composition, human connection.',
+                ]
+            },
+            {
+                category: '💎 Luxury & Refined',
+                suggestions: [
+                    'Exquisite details, premium materials, gold leaf accents, opulent yet refined.',
+                    'Jewelry and luxury goods arranged with Rembrandt finesse, museum lighting.',
+                    'High-end portrait with seamless retouching, luxury aesthetic, pristine quality.',
+                    'Elegant minimalism, sophisticated simplicity, refined taste, gallery-ready execution.',
+                ]
+            },
+            {
+                category: '🌿 Botanical & Nature',
+                suggestions: [
+                    'Figure intertwined with flowers, dappled natural light, organic integration.',
+                    'Botanical still life with Old Masters lighting, delicate textures, precision detail.',
+                    'Nature-inspired portrait, earth elements, flowing composition, harmony with surroundings.',
+                    'Garden setting, soft diffused light through foliage, timeless botanical elegance.',
+                ]
+            },
+            {
+                category: '👁️ Close-Up & Detail',
+                suggestions: [
+                    'Extreme close-up, macro detail of texture—skin, fabric, surface—museum clarity.',
+                    'Fragment of a face, intimate abstraction, psychological intensity, pristine focus.',
+                    'Selective focus, shallow depth, detail as narrative, artistic precision.',
+                    'Hyper-detailed texture study, sculptural surface quality, fine art photography.',
+                ]
+            },
+            {
+                category: '🎪 Surreal & Magical',
+                suggestions: [
+                    'Impossible geometry, figure defying physics, dreamlike logic, enchanted realism.',
+                    'Magical elements seamlessly integrated, luminous auras, otherworldly but believable.',
+                    'Surreal color shifts, unexpected beauty, wonder and mystery, fine art sensibility.',
+                    'Fantastical elements grounded in photorealism, cinematic magic, gallery-quality surrealism.',
+                ]
+            },
+        ];
+
+        let currentCategoryIndex = 0;
+
+        const roughIdea = document.getElementById('roughIdea');
+        const selectedStyle = document.getElementById('selectedStyle');
+        const selectedModel = document.getElementById('selectedModel');
+        const negativePrompt = document.getElementById('negativePrompt');
+        const inspirationBtn = document.getElementById('inspirationBtn');
+        const suggestionBox = document.getElementById('suggestionBox');
+        const refineBtn = document.getElementById('refineBtn');
+        const outputContent = document.getElementById('outputContent');
+        const emptyState = document.getElementById('emptyState');
+        const categoryName = document.getElementById('categoryName');
+        const suggestionsContainer = document.getElementById('suggestionsContainer');
+        const nextCategoryBtn = document.getElementById('nextCategoryBtn');
+
+        // Load saved data
+        function loadData() {
+            const saved = localStorage.getItem('fineArtData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                roughIdea.value = data.roughIdea || '';
+                selectedStyle.value = data.selectedStyle || 'Realistic';
+                selectedModel.value = data.selectedModel || 'Midjourney 6.1';
+                negativePrompt.value = data.negativePrompt || 'bad anatomy, extra fingers, distortion, blur, dull lighting, overexposure';
+            }
+        }
+
+        // Save data
+        function saveData() {
+            localStorage.setItem('fineArtData', JSON.stringify({
+                roughIdea: roughIdea.value,
+                selectedStyle: selectedStyle.value,
+                selectedModel: selectedModel.value,
+                negativePrompt: negativePrompt.value,
+            }));
+        }
+
+        // Update suggestions display
+        function updateSuggestions() {
+            const category = promptCategories[currentCategoryIndex];
+            categoryName.textContent = category.category;
+            suggestionsContainer.innerHTML = category.suggestions.map((suggestion, idx) => 
+                `<button class="suggestion-item" onclick="selectSuggestion('${suggestion.replace(/'/g, "\\'")}')">${suggestion}</button>`
+            ).join('');
+        }
+
+        function selectSuggestion(suggestion) {
+            roughIdea.value = suggestion;
+            suggestionBox.classList.remove('show');
+            saveData();
+        }
+
+        inspirationBtn.addEventListener('click', () => {
+            suggestionBox.classList.toggle('show');
+            if (suggestionBox.classList.contains('show')) {
+                updateSuggestions();
+            }
+        });
+
+        nextCategoryBtn.addEventListener('click', () => {
+            currentCategoryIndex = (currentCategoryIndex + 1) % promptCategories.length;
+            updateSuggestions();
+        });
+
+        // Build prompt
+        function buildPrompt() {
+            const style = selectedStyle.value;
+            const model = selectedModel.value;
+            const idea = roughIdea.value;
+            const negatives = negativePrompt.value.trim() || 'bad anatomy, extra fingers, distortion, blur, dull lighting, overexposure';
+
+            return `Ultra-high quality fine art portrait, ${style} style, ${idea}, Rembrandt lighting, warm amber and earth tones, cinematic realism, pristine detail, museum-quality execution. Optimized for ${model} --no ${negatives}`;
+        }
+
+        // Generate output
+        function generateOutput() {
+            const style = selectedStyle.value;
+            const model = selectedModel.value;
+            const idea = roughIdea.value;
+
+            if (!idea.trim()) {
+                alert('Please enter a creative idea first.');
+                return;
+            }
+
+            // Create structured brief
+            const brief = {
+                'Headline': generateHeadline(idea),
+                'Subject': generateSubject(idea),
+                'Technical': generateTechnical(style),
+                'Scene': generateScene(idea),
+                'Mood & Light': generateMood(idea),
+                'Style Note': generateStyleNote(style),
+                'Model Optimized': generateModelNote(model),
+                'Final Prompt': buildPrompt(),
+            };
+
+            // Display output
+            outputContent.innerHTML = Object.entries(brief).map(([key, value]) => `
+                <div class="output-section">
+                    <div class="output-label">${key}</div>
+                    <div class="output-text ${key === 'Headline' ? 'output-headline' : ''}">${value}</div>
+                    <button class="copy-btn" onclick="copyToClipboard('${value.replace(/'/g, "\\'")}')">${value.length > 50 ? '📋 Copy' : '📋 Copy'}</button>
+                </div>
+            `).join('');
+
+            outputContent.classList.add('show');
+            emptyState.style.display = 'none';
+
+            // Generate style variations
+            const variations = generateStyleVariations(idea);
+            const variationsHTML = `
+                <div class="style-variations show">
+                    <div class="variations-title">🎨 Style Variations (3 Prompts)</div>
+                    <div class="variation-cards">
+                        ${variations.map((variation, idx) => `
+                            <div class="variation-card">
+                                <div class="variation-style">${variation.styleName}</div>
+                                <div class="variation-prompt">${variation.prompt}</div>
+                                <button class="variation-copy" onclick="copyToClipboard('${variation.prompt.replace(/'/g, "\\'")}')">${variation.prompt.length > 80 ? '📋 Copy Variation' : '📋 Copy'}</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Add download/reset buttons at bottom
+            const actionsHTML = `
+                <div class="action-buttons">
+                    <button onclick="downloadBrief()">⬇️ Download Brief</button>
+                    <button onclick="resetAll()">🔄 New Idea</button>
+                </div>
+            `;
+            outputContent.innerHTML += variationsHTML;
+            outputContent.innerHTML += actionsHTML;
+
+            saveData();
+        }
+
+        function generateHeadline(idea) {
+            const words = idea.split(' ');
+            return `"${words.slice(0, 3).join(' ')} in Light"`;
+        }
+
+        function generateSubject(idea) {
+            return `A figure with contemplative presence, expressing ${idea.includes('emotion') ? 'deep emotion' : 'quiet reflection'}. Elegant features, refined expression, emotional depth captured with artistic precision.`;
+        }
+
+        function generateTechnical(style) {
+            const cameras = ['Phase One IQ4', 'Hasselblad 907X', 'Canon EOS R5'];
+            const lenses = ['85mm f/1.4', '150mm f/2.8', '105mm f/2.8'];
+            const camera = cameras[Math.floor(Math.random() * cameras.length)];
+            const lens = lenses[Math.floor(Math.random() * lenses.length)];
+            return `Camera: ${camera}. Lens: ${lens}. ISO 50, f/5.6, 1/160 sec. Rembrandt lighting with kicker light. ${style} aesthetic. Warm amber and earth tones.`;
+        }
+
+        function generateScene(idea) {
+            return `Textured neutral backdrop with warm amber undertones. Elegant pose with deliberate hand placement. Fine fabric draping. Subtle environmental elements suggest narrative depth.`;
+        }
+
+        function generateMood(idea) {
+            return `Light falls like forgiveness—warm, directional, cinematic. Shadows cradle the subject with intention. The interplay of light and shadow creates emotional resonance. Luminous quality suggests quiet contemplation.`;
+        }
+
+        function generateStyleNote(style) {
+            const notes = {
+                'Realistic': 'Photographic realism captures every nuance—texture, micro-expressions, light interaction. Flawless execution with natural aesthetics.',
+                'Oil Painting': 'Rich texture and depth reminiscent of Old Masters. Visible brushwork adds painterly elegance and movement.',
+                'Watercolor': 'Soft edges, fluid transitions, luminous washes create ethereal quality. Unpredictable beauty of the medium.',
+                'Cinematic': 'Film-quality lighting, color grading, and composition. Narrative weight and dramatic visual storytelling.',
+                'Surreal': 'Dreamlike logic, impossible elements integrated seamlessly. Wonder and psychological intrigue.',
+                'Chiaroscuro': 'Dramatic interplay of light and shadow—Rembrandt-inspired contrasts. Deep emotional resonance through tonal mastery.',
+                'Raphealite': 'Pre-Raphaelite sensibility: intricate detail, symbolic richness, jewel-toned color, romantic intensity, historical gravitas.',
+                'Baroque': 'Ornate grandeur, dynamic movement, rich textures, theatrical lighting, emotional drama. Sumptuous and commanding presence.',
+            };
+            return notes[style] || `${style} aesthetic elevates the composition with unique visual language and artistic approach.`;
+        }
+
+        function generateModelNote(model) {
+            const notes = {
+                'Midjourney 6.1': 'Excels at cinematic realism and detailed faces. Use descriptive adjectives and reference lighting types.',
+                'DALL-E 3': 'Strong narrative understanding. Detailed prompts produce museum-quality results.',
+                'Stable Diffusion': 'Highly customizable. Benefits from technical parameters and negative prompts.',
+                'Leonardo AI': 'Excellent for fine detail and texture. Responds well to artistic style references.',
+                'Flux': 'Fast generation with high fidelity. Strong on realism and detail.',
+            };
+            return notes[model] || `${model} renders with strength in detail and composition when given precise artistic direction.`;
+        }
+
+        function generateStyleVariations(idea) {
+            const negatives = negativePrompt.value.trim() || 'bad anatomy, extra fingers, distortion, blur, dull lighting, overexposure';
+            
+            // Character trait variations
+            const characterTraits = [
+                'with flowing, windswept hair',
+                'with intricate braided hair and serene expression',
+                'with tousled curls and contemplative gaze',
+                'with sleek, geometric hair and bold presence',
+                'with wild, textured locks and ethereal quality',
+                'with delicate, wispy hair and vulnerable expression',
+            ];
+
+            // Style variations
+            const styleOptions = ['Oil Painting', 'Watercolor', 'Chiaroscuro', 'Raphealite', 'Baroque', 'Cinematic', 'Surreal', 'Impressionist', '3D Render', 'Sketch', 'Painterly'];
+            
+            // Mix character traits with random styles
+            const variations = [];
+            for (let i = 0; i < 5; i++) {
+                const trait = characterTraits[i % characterTraits.length];
+                const style = styleOptions[Math.floor(Math.random() * styleOptions.length)];
+                
+                variations.push({
+                    styleName: `Variation ${i + 1}: ${style}`,
+                    prompt: `Ultra-high quality fine art portrait, ${style} style, figure ${trait}, ${idea}, Rembrandt lighting, warm amber and earth tones, cinematic realism, pristine detail, museum-quality execution. --no ${negatives}`
+                });
+            }
+
+            return variations;
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text);
+            alert('Copied to clipboard!');
+        }
+
+        function downloadBrief() {
+            const content = outputContent.innerText;
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+            element.setAttribute('download', 'fine-art-brief.txt');
+            element.click();
+        }
+
+        function resetAll() {
+            roughIdea.value = '';
+            outputContent.innerHTML = '';
+            outputContent.classList.remove('show');
+            emptyState.style.display = 'block';
+            saveData();
+        }
+
+        refineBtn.addEventListener('click', generateOutput);
+        roughIdea.addEventListener('change', saveData);
+        selectedStyle.addEventListener('change', saveData);
+        selectedModel.addEventListener('change', saveData);
+
+        // Load on page load
+        loadData();
+    </script>
+</body>
+</html>
